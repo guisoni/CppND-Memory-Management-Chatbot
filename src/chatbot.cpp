@@ -7,39 +7,44 @@
 #include "graphnode.h"
 #include "graphedge.h"
 #include "chatbot.h"
-
+#include <iostream> /*Isoni*/
 // constructor WITHOUT memory allocation
 ChatBot::ChatBot()
-{
+{    /*Isoni*/ //std::cout <<"Enter Constructor ChatBot()"<< std::endl;
     // invalidate data handles
     _image = nullptr;
     _chatLogic = nullptr;
     _rootNode = nullptr;
+    /*Isoni*/ //std::cout <<"_image, _chatLogic, _rootNode = nullptr"<< std::endl;
+    /*Isoni*/ //std::cout <<"Exit Constructor ChatBot()"<< std::endl;
 }
 
 // constructor WITH memory allocation
 ChatBot::ChatBot(std::string filename)
-{
+{    /*Isoni*/ //std::cout <<"Enter Constructor ChatBot(string)" << std::endl;
     std::cout << "ChatBot Constructor" << std::endl;
     
     // invalidate data handles
     _chatLogic = nullptr;
     _rootNode = nullptr;
-
+    /*Isoni*/ //std::cout <<"_chatLogic, _rootNode = nullptr"<< std::endl;
     // load image into heap memory
     _image = new wxBitmap(filename, wxBITMAP_TYPE_PNG);
+    /*Isoni*/ std::cout <<"Allocates _image on address: " << _image << std::endl;
+    /*Isoni*/ //std::cout <<"Exit Constructor ChatBot(string)" << std::endl;
 }
 
 ChatBot::~ChatBot()
-{
+{   /*Isoni*/ //std::cout <<"Enter Destructor ChatBot(string)" << std::endl;
     std::cout << "ChatBot Destructor" << std::endl;
 
     // deallocate heap memory
     if(_image != NULL) // Attention: wxWidgets used NULL and not nullptr
-    {
+    {   /*Isoni*/ std::cout <<"Deallocates _image on address: " << _image << std::endl;
         delete _image;
         _image = NULL;
     }
+    /*Isoni*/ //std::cout <<"Exit Destructor ChatBot(string)" << std::endl;
 }
 
 //// STUDENT CODE
@@ -49,7 +54,7 @@ ChatBot::~ChatBot()
 //// EOF STUDENT CODE
 
 void ChatBot::ReceiveMessageFromUser(std::string message)
-{
+{   /*Isoni*/ //std::cout <<"Enter ReceiveMessageFromUser(string)" << std::endl;
     // loop over all edges and keywords and compute Levenshtein distance to query
     typedef std::pair<GraphEdge *, int> EdgeDist;
     std::vector<EdgeDist> levDists; // format is <ptr,levDist>
@@ -76,17 +81,20 @@ void ChatBot::ReceiveMessageFromUser(std::string message)
     {
         // go back to root node
         newNode = _rootNode;
+        /*change*/ _rootNode = nullptr;
     }
 
     // tell current node to move chatbot to new node
     _currentNode->MoveChatbotToNewNode(newNode);
+    /*Isoni*/ //std::cout <<"Exit ReceiveMessageFromUser(string)" << std::endl;
 }
 
 void ChatBot::SetCurrentNode(GraphNode *node)
-{
+{  /*Isoni*/ //std::cout <<"SetCurrentNode(GraphNode *)" << std::endl;
     // update pointer to current node
     _currentNode = node;
-
+    /*change*/ //node = nullptr;
+    /*Isoni*/ //std::cout <<"Shared _currentNode on address: " << _currentNode << std::endl; 
     // select a random node answer (if several answers should exist)
     std::vector<std::string> answers = _currentNode->GetAnswers();
     std::mt19937 generator(int(std::time(0)));
@@ -95,10 +103,11 @@ void ChatBot::SetCurrentNode(GraphNode *node)
 
     // send selected node answer to user
     _chatLogic->SendMessageToUser(answer);
+    /*Isoni*/ //std::cout <<"Exit ReceiveMessageFromUser(string)" << std::endl;
 }
 
 int ChatBot::ComputeLevenshteinDistance(std::string s1, std::string s2)
-{
+{   /*Isoni*/ //std::cout <<"Enter ComputeLevenshteinDistance(string, string)" << std::endl;
     // convert both strings to upper-case before comparing
     std::transform(s1.begin(), s1.end(), s1.begin(), ::toupper);
     std::transform(s2.begin(), s2.end(), s2.begin(), ::toupper);
@@ -113,7 +122,7 @@ int ChatBot::ComputeLevenshteinDistance(std::string s1, std::string s2)
         return m;
 
     size_t *costs = new size_t[n + 1];
-
+    /*Isoni*/ std::cout <<"Allocates costs on address: "<< costs << std::endl;
     for (size_t k = 0; k <= n; k++)
         costs[k] = k;
 
@@ -142,7 +151,9 @@ int ChatBot::ComputeLevenshteinDistance(std::string s1, std::string s2)
     }
 
     int result = costs[n];
+    /*Isoni*/ std::cout <<"Deallocates costs on address: "<< costs << std::endl;  
     delete[] costs;
-
+ 
+    /*Isoni*/ //std::cout <<"Exit ComputeLevenshteinDistance(string, string)" << std::endl;
     return result;
 }
