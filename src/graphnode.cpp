@@ -9,11 +9,12 @@ GraphNode::GraphNode(int id)
 }
 
 GraphNode::~GraphNode()
-{   /*Isoni*/ //std::cout <<"Enters Destructor GraphNode(int) " << std::endl;
+{   /*Isoni*/ std::cout <<"Enters Destructor GraphNode(int) " << std::endl;
     //// STUDENT CODE
     ////
-    /*Isoni*/ std::cout <<"Deallocates 2 _chatbot on address: "<< _chatBot << std::endl;
-    delete _chatBot; 
+    /*Isoni*/ //std::cout <<"Deallocates _chatBot: " << &_chatBot <<": on address: "<< _chatBot << std::endl;
+    /*change*///delete _chatBot; 
+    
     
     
     /*Isoni*/ //std::cout <<"Exit destructor GraphNode(int) " << std::endl;
@@ -46,25 +47,27 @@ void GraphNode::AddEdgeToChildNode(GraphEdge *edge)
 //// STUDENT CODE
 ////
 void GraphNode::MoveChatbotHere(ChatBot *chatbot)
-{   /*Isoni*/ //std::cout <<"Enter MoveChatbotHere(ChatBot *) " << std::endl;
+{   /*Isoni*/ std::cout <<"Enter MoveChatbotHere(ChatBot *) " << std::endl;
     _chatBot = chatbot;
-    /*change*/ chatbot = nullptr;
-    /*Isoni*/ //std::cout <<"Shares _chatBot to childEdges "<< _chatBot << std::endl;
+    /*change*/ //chatbot = nullptr;
+    /*Isoni*/ std::cout <<"_chatBot "<< &_chatBot <<": receives: "<< &chatbot <<": on address: " << _chatBot << std::endl;
     _chatBot->SetCurrentNode(this);
     /*Isoni*/ //std::cout <<"Exit MoveChatbotHere(ChatBot *) " << std::endl;
 }
 
 void GraphNode::MoveChatbotToNewNode(GraphNode *newNode)
-{    /*Isoni*/ //std::cout << "Enter MoveChatbotToNewNode(GraphNode *) " << std::endl;
+{    /*Isoni*/ std::cout << "Enter MoveChatbotToNewNode(GraphNode *) " << std::endl;
     newNode->MoveChatbotHere(_chatBot);
+    /*Isoni*/ std::cout <<"_chatBot "<< &_chatBot <<" = nullptr" << std::endl; 
     _chatBot = nullptr; // invalidate pointer at source
+
     /*Isoni*/ //std::cout << "Exit MoveChatbotToNewNode(GraphNode *) " << std::endl;
 }
 ////
 //// EOF STUDENT CODE
 
 GraphEdge *GraphNode::GetChildEdgeAtIndex(int index)
-{   /*Isoni*/ //std::cout << "Enter GetChildEdgeAtIndex(int) " << std::endl;
+{   /*Isoni*/ std::cout << "Enter GetChildEdgeAtIndex(int) " << std::endl;
     //// STUDENT CODE
     ////
     /*Isoni*/ //std::cout << "Exit GetChildEdgeAtIndex(int) " << std::endl;

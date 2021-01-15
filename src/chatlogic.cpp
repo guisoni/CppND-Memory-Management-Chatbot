@@ -13,33 +13,33 @@
 #include <iostream> /*isoni*/
 
 ChatLogic::ChatLogic()
-{    /*Isoni*/ //std::cout <<"Enter Constructor ChatLogic()"<< std::endl;
+{    /*Isoni*/ std::cout <<"Enter Constructor ChatLogic()"<< std::endl;
     //// STUDENT CODE
     ////
 
     // create instance of chatbot
     _chatBot = new ChatBot("../images/chatbot.png");
-    /*Isoni*/ std::cout <<"Allocates _chatBot on address: "<< _chatBot << std::endl;
+    /*Isoni*/ std::cout <<"Allocates _chatBot: " << &_chatBot << ": on address: "<< _chatBot << std::endl;
     // add pointer to chatlogic so that chatbot answers can be passed on to the GUI
     _chatBot->SetChatLogicHandle(this);
     
-    /*Isoni*/ //std::cout <<"Exit Constructor ChatLogic()"<< std::endl;
+    /*Isoni*/ std::cout <<"Exit Constructor ChatLogic()"<< std::endl;
     ////
     //// EOF STUDENT CODE
 }
 
 ChatLogic::~ChatLogic()
-{    /*Isoni*/ //std::cout <<"Enter Destructor ChatLogic()"<< std::endl;
+{    /*Isoni*/ std::cout <<"Enter Destructor ChatLogic()"<< std::endl;
     //// STUDENT CODE
     ////
 
     // delete chatbot instance
-    /*Isoni*/ std::cout <<"Deallocates _chatBot on adress: "<< _chatBot << std::endl;
+    /*Isoni*/ std::cout <<"Deallocates _chatBot: "<< &_chatBot <<": on address: "<< _chatBot << std::endl;
     delete _chatBot;
 
     // delete all nodes
     for (auto it = std::begin(_nodes); it != std::end(_nodes); ++it)
-    {    /*Isoni*/ std::cout <<"Deallocates _nodes[i] it on adress: "<< *it << std::endl;
+    {    /*Isoni*/ std::cout <<"Deallocates _nodes[i] it: "<< &it <<": on adress: "<< *it << std::endl;
         delete *it;
         
     }
@@ -47,18 +47,18 @@ ChatLogic::~ChatLogic()
 
     // delete all edges
     for (auto it = std::begin(_edges); it != std::end(_edges); ++it)
-    {    /*Isoni*/ std::cout <<"Deallocates _edges[i] it on adress: "<< *it << std::endl;
+    {    /*Isoni*/ std::cout <<"Deallocates _edges[i] it: "<< &it <<": on adress: "<< *it << std::endl;
         delete *it;
     }
     
-    /*Isoni*/ //std::cout <<"Exit Destructor ChatLogic()"<< std::endl;
+    /*Isoni*/ std::cout <<"Exit Destructor ChatLogic()"<< std::endl;
     ////
     //// EOF STUDENT CODE
 }
 
 template <typename T>
 void ChatLogic::AddAllTokensToElement(std::string tokenID, tokenlist &tokens, T &element)
-{    /*Isoni*/ //std::cout <<"Enters AddAllTokensToElement(string, tokenlist &, T &)"<< std::endl;
+{    /*Isoni*/ std::cout <<"Enters AddAllTokensToElement(string, tokenlist &, T &)"<< std::endl;
     // find all occurences for current node
     auto token = tokens.begin();
     while (true)
@@ -74,11 +74,11 @@ void ChatLogic::AddAllTokensToElement(std::string tokenID, tokenlist &tokens, T 
             break; // quit infinite while-loop
         }
     }
-    /*Isoni*/ //std::cout <<"Exits AddAllTokensToElement(string, tokenlist &, T &)"<< std::endl;
+    /*Isoni*/ std::cout <<"Exits AddAllTokensToElement(string, tokenlist &, T &)"<< std::endl;
 }
 
 void ChatLogic::LoadAnswerGraphFromFile(std::string filename)
-{    /*Isoni*/ //std::cout <<"Enters LoadAnswerGraphFromFile(string)"<< std::endl;
+{    /*Isoni*/ std::cout <<"Enters LoadAnswerGraphFromFile(string)"<< std::endl;
     // load file with answer graph elements
     std::ifstream file(filename);
 
@@ -139,7 +139,7 @@ void ChatLogic::LoadAnswerGraphFromFile(std::string filename)
                         if (newNode == _nodes.end())
                         {
                             _nodes.emplace_back(new GraphNode(id));
-                            /*Isoni*/ std::cout <<"Allocates memory on _nodes "<< _nodes.back() << std::endl;
+                            /*Isoni*/ std::cout <<"Allocates memory on _nodes "<< &_nodes[_nodes.size()-1] <<" on address: "<< _nodes.back() << std::endl;
                             newNode = _nodes.end() - 1; // get iterator to last element
 
                             // add all answers to current node
@@ -168,7 +168,7 @@ void ChatLogic::LoadAnswerGraphFromFile(std::string filename)
 
                             // create new edge
                             GraphEdge *edge = new GraphEdge(id);
-                            std::cout << "Allocates edge on adress " << edge << std::endl;
+                            std::cout << "Allocates edge: "<< &edge <<" on address: " << edge << std::endl;
                             edge->SetChildNode(*childNode);
                             edge->SetParentNode(*parentNode);
                             _edges.push_back(edge);
@@ -215,28 +215,29 @@ void ChatLogic::LoadAnswerGraphFromFile(std::string filename)
             if (rootNode == nullptr)
             {
                 rootNode = *it; // assign current node to root
+                std::cout <<"rootNode: " << &rootNode <<": receives *it: "<< &it <<":on address: "<< *it << std::endl;                
             }
             else
             {
                 std::cout << "ERROR : Multiple root nodes detected" << std::endl;
             }
         }
-        /*Isoni*/ //std::cout <<"Exit LoadAnswerGraphFromFile(string)"<< std::endl;
-    }
+         }
 
     // add chatbot to graph root node
     _chatBot->SetRootNode(rootNode);
     rootNode->MoveChatbotHere(_chatBot);
-    
+    /*Isoni*/ std::cout <<"Exit LoadAnswerGraphFromFile(string)"<< std::endl;
+   
     ////
     //// EOF STUDENT CODE
 }
 
 void ChatLogic::SetPanelDialogHandle(ChatBotPanelDialog *panelDialog)
-{    /*Isoni*/ //std::cout <<"Enter etPanelDialogHandle(ChatBotPanelDialog *)"<< std::endl;
+{    /*Isoni*/ //std::cout <<"Enter $etPanelDialogHandle(ChatBotPanelDialog *)"<< std::endl;
     _panelDialog = panelDialog;
-    /*change*/ panelDialog = nullptr;
-    /*Isoni*/ //std::cout <<"Shares panelDIalog pointer address: "<< panelDialog << std::endl;
+    /*change*/ //panelDialog = nullptr;
+    /*Isoni*/ std::cout <<"_panelDialog: " << &_panelDialog <<": receives panelDialog: "<< &panelDialog <<": on address: "<< panelDialog << std::endl;
     /*Isoni*/ //std::cout <<"Exit SetPanelDialogHandle(ChatBotPanelDialog *)"<< std::endl;
 }
 
@@ -244,7 +245,7 @@ void ChatLogic::SetChatbotHandle(ChatBot *chatbot)
 {    /*Isoni*/ //std::cout <<"Enter SetChatbotHandle(ChatBot *)"<< std::endl;
     _chatBot = chatbot;
     /*change*/ //chatbot = nullptr;
-    /*Isoni*/ //std::cout <<"Shares chatbot pointer address: "<< chatbot << std::endl;
+    /*Isoni*/ std::cout <<"_chatBot: " << &_chatBot <<": receives chatBot: "<< &chatbot <<":on address: "<< chatbot << std::endl;
     /*Isoni*/ //std::cout <<"Exit SetChatbotHandle(ChatBot *)"<< std::endl;
 }
 
