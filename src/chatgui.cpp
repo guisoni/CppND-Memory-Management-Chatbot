@@ -66,7 +66,7 @@ void ChatBotFrame::OnEnter(wxCommandEvent &WXUNUSED(event))
 
     // delete text in text control
     _userTextCtrl->Clear();
-
+     
     // send user text to chatbot 
      _panelDialog->GetChatLogicHandle()->SendMessageToChatbot(std::string(userText.mb_str()));
      /*Isoni*/ std::cout << "Exit OnEnter(wxCommandEvent"<<std::endl;
@@ -130,8 +130,8 @@ ChatBotPanelDialog::ChatBotPanelDialog(wxWindow *parent, wxWindowID id)
     ////
 
     // create chat logic instance
-    _chatLogic = new ChatLogic(); 
-    /*Isoni*/ std::cout<<"Allocates _chatLogic: " << &_chatLogic <<": on address: " << _chatLogic << std::endl;
+    _chatLogic = std::make_unique<ChatLogic>(); 
+    /*Isoni*/ std::cout<<"Allocates _chatLogic: " << &_chatLogic <<": on address: " << _chatLogic.get() << std::endl;
     // pass pointer to chatbot dialog so answers can be displayed in GUI
     _chatLogic->SetPanelDialogHandle(this);
 
@@ -148,8 +148,8 @@ ChatBotPanelDialog::~ChatBotPanelDialog()
 {    /*isoni*/ std::cout << "Enter Destructor ~ChatBotPanelDialog" << std::endl;
     //// STUDENT CODE
     ////
-    /*Isoni*/ std::cout<<"Deallocates _chatLogic: " <<  &_chatLogic << ": on address" << _chatLogic << std::endl;    
-    delete _chatLogic;
+    ///*Isoni*/ std::cout<<"Deallocates _chatLogic: " <<  &_chatLogic << ": on address" << _chatLogic << std::endl;    
+    //delete _chatLogic;
 
     /*isoni*/ std::cout << "Exit Destructor ~ChatBotPanelDialog" << std::endl;
 
