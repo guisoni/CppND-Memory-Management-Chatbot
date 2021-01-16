@@ -49,7 +49,77 @@ ChatBot::~ChatBot()
 
 //// STUDENT CODE
 ////
+    ChatBot::ChatBot(const ChatBot &chatbot)
+    {
+        std::cout << "ChatBot Copy Constructor" << std::endl;
+        _image = new wxBitmap();
+        *_image = *chatbot._image;
+        _currentNode = new GraphNode(chatbot._currentNode->GetID());
+        *_currentNode = *chatbot._currentNode;
+        _rootNode = new GraphNode(chatbot._rootNode->GetID());
+        *_rootNode = *chatbot._rootNode;
+        _chatLogic = new ChatLogic();
+        *_chatLogic = *chatbot._chatLogic;
+    }
 
+    ChatBot& ChatBot::operator=(const ChatBot &chatbot)
+    {
+        std::cout << "ChatBot Copy assignment Constructor" << std::endl;
+        if(this == &chatbot)
+            return *this;
+        delete _image;
+        delete _currentNode;
+        delete _rootNode;
+        delete _chatLogic;
+
+        _image = new wxBitmap();
+        *_image = *chatbot._image;
+        _currentNode = new GraphNode(chatbot._currentNode->GetID());
+        *_currentNode = *chatbot._currentNode;
+        _rootNode = new GraphNode(chatbot._rootNode->GetID());
+        *_rootNode = *chatbot._rootNode;
+        _chatLogic = new ChatLogic();
+        *_chatLogic = *chatbot._chatLogic;
+        return *this;
+    }
+
+    ChatBot::ChatBot(ChatBot &&chatbot)
+    {
+        std::cout << "ChatBot Move Constructor" << std::endl;
+        _image = chatbot._image;
+        chatbot._image = NULL;
+        _currentNode = chatbot._currentNode;
+        chatbot._currentNode = nullptr;
+        _rootNode = chatbot._rootNode;
+        chatbot._rootNode = nullptr;
+        _chatLogic = chatbot._chatLogic;
+        chatbot._chatLogic = nullptr;
+    }
+    ChatBot& ChatBot::operator=(ChatBot &&chatbot)
+    {
+        std::cout << "ChatBot Move Assignment Constructor" << std::endl;
+        if(this == &chatbot)
+            return *this;
+        delete _image;
+        delete _currentNode;
+        delete _rootNode;
+        delete _chatLogic;
+        
+
+        _image = new wxBitmap();
+        _image = chatbot._image;
+        chatbot._image = NULL;
+        _currentNode = new GraphNode(chatbot._currentNode->GetID());
+        _currentNode = chatbot._currentNode;
+        chatbot._currentNode = nullptr;
+        _rootNode = new GraphNode(chatbot._rootNode->GetID());
+        _rootNode = chatbot._rootNode;
+        chatbot._rootNode = nullptr;
+        _chatLogic = new ChatLogic();
+        _chatLogic = chatbot._chatLogic;
+        chatbot._chatLogic = nullptr;
+        return *this;
+    }
 ////
 //// EOF STUDENT CODE
 
