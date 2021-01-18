@@ -11,12 +11,14 @@
 #include "chatbot.h"
 #include "chatlogic.h"
 #include <iostream> /*isoni*/
+#include <memory>
+
 
 ChatLogic::ChatLogic()
 {    /*Isoni*/ std::cout <<"Enter Constructor ChatLogic()"<< std::endl;
     //// STUDENT CODE
     ////
-
+     
     // create instance of chatbot
     _chatBot = new ChatBot("../images/chatbot.png");
     /*Isoni*/ std::cout <<"Allocates _chatBot: " << &_chatBot << ": on address: "<< _chatBot << std::endl;
@@ -37,12 +39,12 @@ ChatLogic::~ChatLogic()
     /*Isoni*/ std::cout <<"Deallocates _chatBot: "<< &_chatBot <<": on address: "<< _chatBot << std::endl;
     delete _chatBot;
 
-    // delete all nodes
-    for (auto it = std::begin(_nodes); it != std::end(_nodes); ++it)
-    {    /*Isoni*/ std::cout <<"Deallocates _nodes[i] it: "<< &it <<": on adress: "<< *it << std::endl;
-        delete *it;
-        
-    }
+     //delete all nodes
+    //for (auto it = std::begin(_nodes); it != std::end(_nodes); ++it)
+    //{    /*Isoni*/ std::cout <<"Deallocates _nodes[i] it: "<< &it <<": on adress: "<< *it << std::endl;
+    //    delete *it;  
+    //} 
+    
     
 
     // delete all edges
@@ -63,7 +65,7 @@ void ChatLogic::AddAllTokensToElement(std::string tokenID, tokenlist &tokens, T 
     auto token = tokens.begin();
     while (true)
     {
-        token = std::find_if(token, tokens.end(), [&tokenID](const std::pair<std::string, std::string> &pair) { return pair.first == tokenID;; });
+        token = std::find_if(token, tokens.end(), [&tokenID](const std::pair<std::string, std::string> &pair) { return pair.first == tokenID; });
         if (token != tokens.end())
         {
             element.AddToken(token->second); // add new keyword to edge
@@ -133,18 +135,17 @@ void ChatLogic::LoadAnswerGraphFromFile(std::string filename)
                         ////
 
                         // check if node with this ID exists already
-                        auto newNode = std::find_if(_nodes.begin(), _nodes.end(), [&id](GraphNode *node) { return node->GetID() == id; });
-
+                        auto newNode = std::find_if(_nodes.begin(), _nodes.end(), [&id](std::unique_ptr<GraphNode> &node) { return node->GetID() == id; });      
                         // create new element if ID does not yet exist
                         if (newNode == _nodes.end())
                         {
-                            _nodes.emplace_back(new GraphNode(id));
-                            /*Isoni*/ std::cout <<"Allocates memory on _nodes "<< &_nodes[_nodes.size()-1] <<" on address: "<< _nodes.back() << std::endl;
+                            _nodes.emplace_back(std::make_unique<GraphNode>(id));
+                            ///*Isoni*/ std::cout <<"Allocates memory on _nodes "<< &_nodes[_nodes.size()-1] <<" on address: "<< _nodes.back() << std::endl;
                             newNode = _nodes.end() - 1; // get iterator to last element
 
                             // add all answers to current node
                             AddAllTokensToElement("ANSWER", tokens, **newNode);
-                        }
+                        }  
 
                         ////
                         //// EOF STUDENT CODE
@@ -163,14 +164,14 @@ void ChatLogic::LoadAnswerGraphFromFile(std::string filename)
                         if (parentToken != tokens.end() && childToken != tokens.end())
                         {
                             // get iterator on incoming and outgoing node via ID search
-                            auto parentNode = std::find_if(_nodes.begin(), _nodes.end(), [&parentToken](GraphNode *node) { return node->GetID() == std::stoi(parentToken->second); });
-                            auto childNode = std::find_if(_nodes.begin(), _nodes.end(), [&childToken](GraphNode *node) { return node->GetID() == std::stoi(childToken->second); });
-
+                            auto parentNode = std::find_if(_nodes.begin(), _nodes.end(), [&parentToken](std::unique_ptr<GraphNode> &node) { return node->GetID() == std::stoi(parentToken->second); });
+                            auto childNode = std::find_if(_nodes.begin(), _nodes.end(), [&childToken](std::unique_ptr<GraphNode> &node) { return node->GetID() == std::stoi(childToken->second); });
+ 
                             // create new edge
                             GraphEdge *edge = new GraphEdge(id);
                             std::cout << "Allocates edge: "<< &edge <<" on address: " << edge << std::endl;
-                            edge->SetChildNode(*childNode);
-                            edge->SetParentNode(*parentNode);
+                            edge->SetChildNode(childNode->get());
+                            edge->SetParentNode(parentNode->get());
                             _edges.push_back(edge);
 
                             // find all keywords for current node
@@ -214,8 +215,8 @@ void ChatLogic::LoadAnswerGraphFromFile(std::string filename)
 
             if (rootNode == nullptr)
             {
-                rootNode = *it; // assign current node to root
-                std::cout <<"rootNode: " << &rootNode <<": receives *it: "<< &it <<":on address: "<< *it << std::endl;                
+                rootNode = it->get(); // assign current node to root
+                //std::cout <<"rootNode: " << &rootNode <<": receives *it: "<< &it <<":on address: "<< *it << std::endl;                
             }
             else
             {
