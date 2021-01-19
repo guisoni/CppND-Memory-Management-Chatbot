@@ -48,10 +48,10 @@ ChatLogic::~ChatLogic()
     
 
     // delete all edges
-    for (auto it = std::begin(_edges); it != std::end(_edges); ++it)
-    {    /*Isoni*/ std::cout <<"Deallocates _edges[i] it: "<< &it <<": on adress: "<< *it << std::endl;
-        delete *it;
-    }
+    //for (auto it = std::begin(_edges); it != std::end(_edges); ++it)
+    //{    /*Isoni*/ std::cout <<"Deallocates _edges[i] it: "<< &it <<": on adress: "<< *it << std::endl;
+    //    delete *it;
+   // }
     
     /*Isoni*/ std::cout <<"Exit Destructor ChatLogic()"<< std::endl;
     ////
@@ -168,18 +168,18 @@ void ChatLogic::LoadAnswerGraphFromFile(std::string filename)
                             auto childNode = std::find_if(_nodes.begin(), _nodes.end(), [&childToken](std::unique_ptr<GraphNode> &node) { return node->GetID() == std::stoi(childToken->second); });
  
                             // create new edge
-                            GraphEdge *edge = new GraphEdge(id);
-                            std::cout << "Allocates edge: "<< &edge <<" on address: " << edge << std::endl;
+                            std::unique_ptr<GraphEdge> edge = std::make_unique<GraphEdge>(id);
+                            std::cout << "Allocates edge: "<< &edge <<" on address: " << edge.get() << std::endl;
                             edge->SetChildNode(childNode->get());
                             edge->SetParentNode(parentNode->get());
-                            _edges.push_back(edge);
+                            //_edges.push_back(std::move(edge));
 
                             // find all keywords for current node
                             AddAllTokensToElement("KEYWORD", tokens, *edge);
 
                             // store reference in child node and parent node
-                            (*childNode)->AddEdgeToParentNode(edge);
-                            (*parentNode)->AddEdgeToChildNode(edge);
+                            (*childNode)->AddEdgeToParentNode(edge.get());
+                            (*parentNode)->AddEdgeToChildNode(std::move(edge));
                         }
 
                         ////

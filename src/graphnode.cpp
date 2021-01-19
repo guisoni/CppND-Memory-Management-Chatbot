@@ -36,9 +36,9 @@ void GraphNode::AddEdgeToParentNode(GraphEdge *edge)
     /*Isoni*/ //std::cout <<"Exit AddEdgeToParentNode(GraphEdge *) " << std::endl;
 }
 
-void GraphNode::AddEdgeToChildNode(GraphEdge *edge)
+void GraphNode::AddEdgeToChildNode(std::unique_ptr<GraphEdge> edge)
 {   /*Isoni*/ //std::cout <<"Enter AddEdgeToChildNode(GraphEdge *) " << std::endl;
-    _childEdges.push_back(edge);
+    _childEdges.push_back(std::move(edge));
     /*change*/ //edge = nullptr;
     /*Isoni*/ //std::cout <<"Shares edge to childEdges "<< edge << std::endl;
     /*Isoni*/ //std::cout <<"Exit AddEdgeToChildNode(GraphEdge *) " << std::endl;
@@ -71,7 +71,7 @@ GraphEdge *GraphNode::GetChildEdgeAtIndex(int index)
     //// STUDENT CODE
     ////
     /*Isoni*/ //std::cout << "Exit GetChildEdgeAtIndex(int) " << std::endl;
-    return _childEdges[index];
+    return _childEdges[index].get();
 
     ////
     //// EOF STUDENT CODE
