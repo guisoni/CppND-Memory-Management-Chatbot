@@ -48,7 +48,7 @@ void GraphNode::AddEdgeToChildNode(std::unique_ptr<GraphEdge> edge)
 ////
 void GraphNode::MoveChatbotHere(ChatBot *chatbot)
 {   /*Isoni*/ std::cout <<"Enter MoveChatbotHere(ChatBot *) " << std::endl;
-    _chatBot = chatbot;
+    _chatBot = std::move(chatbot);
     /*change*/ //chatbot = nullptr;
     /*Isoni*/ std::cout <<"_chatBot "<< &_chatBot <<": receives: "<< &chatbot <<": on address: " << _chatBot << std::endl;
     _chatBot->SetCurrentNode(this);

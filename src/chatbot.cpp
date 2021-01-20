@@ -164,11 +164,11 @@ void ChatBot::ReceiveMessageFromUser(std::string message)
 }
 
 void ChatBot::SetCurrentNode(GraphNode *node)
-{  /*Isoni*/ //std::cout <<"SetCurrentNode(GraphNode *)" << std::endl;
+{  /*Isoni*/ std::cout <<"SetCurrentNode(GraphNode *)" << std::endl;
     // update pointer to current node
     _currentNode = node;
     /*change*/ //node = nullptr;
-    /*Isoni*/ //std::cout <<"Shared _currentNode on address: " << _currentNode << std::endl; 
+    /*Isoni*/ std::cout <<"Shared _currentNode on address: " << _currentNode << std::endl; 
     // select a random node answer (if several answers should exist)
     std::vector<std::string> answers = _currentNode->GetAnswers();
     std::mt19937 generator(int(std::time(0)));

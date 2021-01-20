@@ -20,12 +20,12 @@ ChatLogic::ChatLogic()
     ////
      
     // create instance of chatbot
-    _chatBot = new ChatBot("../images/chatbot.png");
-    /*Isoni*/ std::cout <<"Allocates _chatBot: " << &_chatBot << ": on address: "<< _chatBot << std::endl;
+    //_chatBot = new ChatBot("../images/chatbot.png");
+    /*Isoni*/ //std::cout <<"Allocates _chatBot: " << &_chatBot << ": on address: "<< _chatBot << std::endl;
     // add pointer to chatlogic so that chatbot answers can be passed on to the GUI
-    _chatBot->SetChatLogicHandle(this);
+    //_chatBot->SetChatLogicHandle(this);
     
-    /*Isoni*/ std::cout <<"Exit Constructor ChatLogic()"<< std::endl;
+    /*Isoni*/ //std::cout <<"Exit Constructor ChatLogic()"<< std::endl;
     ////
     //// EOF STUDENT CODE
 }
@@ -36,8 +36,8 @@ ChatLogic::~ChatLogic()
     ////
 
     // delete chatbot instance
-    /*Isoni*/ std::cout <<"Deallocates _chatBot: "<< &_chatBot <<": on address: "<< _chatBot << std::endl;
-    delete _chatBot;
+    /*Isoni*/ //std::cout <<"Deallocates _chatBot: "<< &_chatBot <<": on address: "<< _chatBot << std::endl;
+    //delete _chatBot;
 
      //delete all nodes
     //for (auto it = std::begin(_nodes); it != std::end(_nodes); ++it)
@@ -226,8 +226,13 @@ void ChatLogic::LoadAnswerGraphFromFile(std::string filename)
          }
 
     // add chatbot to graph root node
-    _chatBot->SetRootNode(rootNode);
-    rootNode->MoveChatbotHere(_chatBot);
+     ChatBot *chatbot = new ChatBot("../images/chatbot.png");
+     _chatBot = chatbot; 
+     _chatBot->SetChatLogicHandle(this);
+     _chatBot->SetRootNode(rootNode);
+     /*Isoni*/ std::cout <<"Test"<< std::endl;
+     rootNode->MoveChatbotHere(_chatBot);
+    
     /*Isoni*/ std::cout <<"Exit LoadAnswerGraphFromFile(string)"<< std::endl;
    
     ////
