@@ -11,12 +11,15 @@
 #include "chatbot.h"
 #include "chatlogic.h"
 #include <memory>
-
+#include <iostream>
 
 ChatLogic::ChatLogic()
 {
     //// STUDENT CODE
     ////
+     //ChatBot *_chatBot = new ChatBot("../images/chatbot.png");
+    //_chatBot->SetChatLogicHandle(this);
+     
     ////
     //// EOF STUDENT CODE
 }
@@ -25,7 +28,7 @@ ChatLogic::~ChatLogic()
 {    
     //// STUDENT CODE
     ////
-    delete _chatBot;
+     //delete _chatBot;
     ////
     //// EOF STUDENT CODE
 }
@@ -195,12 +198,10 @@ void ChatLogic::LoadAnswerGraphFromFile(std::string filename)
          }
 
     // add chatbot to graph root node
-     ChatBot *chatbot = new ChatBot("../images/chatbot.png");
-    _chatBot = chatbot;
-     _chatBot->SetChatLogicHandle(this);
-     _chatBot->SetRootNode(rootNode);
-     rootNode->MoveChatbotHere(_chatBot);
-     chatbot = _chatBot;
+     ChatBot chatbot=ChatBot("../images/chatbot.png");
+     chatbot.SetChatLogicHandle(this);
+     chatbot.SetRootNode(rootNode);
+     rootNode->MoveChatbotHere(std::move(chatbot));
    
     ////
     //// EOF STUDENT CODE

@@ -7,7 +7,7 @@
 #include "graphnode.h"
 #include "graphedge.h"
 #include "chatbot.h"
-
+#include <iostream>
 // constructor WITHOUT memory allocation
 ChatBot::ChatBot()
 {   
@@ -17,6 +17,7 @@ ChatBot::ChatBot()
     _rootNode = nullptr;
 
 }
+
 
 // constructor WITH memory allocation
 ChatBot::ChatBot(std::string filename)
@@ -101,22 +102,13 @@ ChatBot::~ChatBot()
         std::cout << "ChatBot Move Assignment Constructor" << std::endl;
         if(this == &chatbot)
             return *this;
-        delete _image;
-        delete _currentNode;
-        delete _rootNode;
-        delete _chatLogic;
         
-
-        _image = new wxBitmap();
         _image = chatbot._image;
         chatbot._image = NULL;
-        _currentNode = new GraphNode(chatbot._currentNode->GetID());
         _currentNode = chatbot._currentNode;
         chatbot._currentNode = nullptr;
-        _rootNode = new GraphNode(chatbot._rootNode->GetID());
         _rootNode = chatbot._rootNode;
         chatbot._rootNode = nullptr;
-        _chatLogic = new ChatLogic();
         _chatLogic = chatbot._chatLogic;
         chatbot._chatLogic = nullptr;
         return *this;
@@ -161,6 +153,7 @@ void ChatBot::ReceiveMessageFromUser(std::string message)
 
 void ChatBot::SetCurrentNode(GraphNode *node)
 {  
+    
     // update pointer to current node
     _currentNode = node;
     // select a random node answer (if several answers should exist)
@@ -171,6 +164,7 @@ void ChatBot::SetCurrentNode(GraphNode *node)
 
     // send selected node answer to user
     _chatLogic->SendMessageToUser(answer);
+    
 
 }
 
