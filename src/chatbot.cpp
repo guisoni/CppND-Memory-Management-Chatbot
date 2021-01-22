@@ -45,20 +45,11 @@ ChatBot::~ChatBot()
     }
 }
 
-//// STUDENT CODE
-////
+
     ChatBot::ChatBot(ChatBot &chatbot)
     {
         std::cout << "ChatBot Copy Constructor" << std::endl;
-        /*_image = new wxBitmap();
-        *_image = *chatbot._image;
-        _currentNode = new GraphNode(chatbot._currentNode->GetID());
-        *_currentNode = *chatbot._currentNode;
-        _rootNode = new GraphNode(chatbot._rootNode->GetID());
-        *_rootNode = *chatbot._rootNode;
-        _chatLogic = new ChatLogic();
-        *_chatLogic = *chatbot._chatLogic;*/
-
+    
         _image = chatbot._image;
         chatbot._image = nullptr;
         _currentNode = chatbot._currentNode;
@@ -113,8 +104,6 @@ ChatBot::~ChatBot()
         chatbot._chatLogic = nullptr;
         return *this;
     }
-////
-//// EOF STUDENT CODE
 
 void ChatBot::ReceiveMessageFromUser(std::string message)
 {   
@@ -153,7 +142,6 @@ void ChatBot::ReceiveMessageFromUser(std::string message)
 
 void ChatBot::SetCurrentNode(GraphNode *node)
 {  
-    
     // update pointer to current node
     _currentNode = node;
     // select a random node answer (if several answers should exist)
@@ -161,7 +149,7 @@ void ChatBot::SetCurrentNode(GraphNode *node)
     std::mt19937 generator(int(std::time(0)));
     std::uniform_int_distribution<int> dis(0, answers.size() - 1);
     std::string answer = answers.at(dis(generator));
-
+    _chatLogic->SetChatbotHandle(this);
     // send selected node answer to user
     _chatLogic->SendMessageToUser(answer);
     

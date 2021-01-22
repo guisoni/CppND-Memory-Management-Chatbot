@@ -10,6 +10,7 @@
 // forward declarations
 class GraphEdge;
 
+
 class GraphNode
 {
 private:
@@ -47,13 +48,8 @@ public:
     void AddEdgeToParentNode(GraphEdge *edge);
     void AddEdgeToChildNode(std::unique_ptr<GraphEdge> edge);
 
-    //// STUDENT CODE
-    ////
-
     void MoveChatbotHere(ChatBot chatbot);
 
-    ////
-    //// EOF STUDENT CODE
 
     void MoveChatbotToNewNode(GraphNode *newNode);
 };
