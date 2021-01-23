@@ -55,6 +55,7 @@ ChatBot::~ChatBot()
         _currentNode = chatbot._currentNode;
         _rootNode = chatbot._rootNode;
         _chatLogic = chatbot._chatLogic;
+        _chatLogic->SetChatbotHandle(this);
     }
 
     ChatBot& ChatBot::operator=(ChatBot &chatbot)
@@ -65,6 +66,7 @@ ChatBot::~ChatBot()
         _currentNode = chatbot._currentNode;
         _rootNode = chatbot._rootNode;
         _chatLogic = chatbot._chatLogic;
+        _chatLogic->SetChatbotHandle(this);
         return *this;
     }     
     
@@ -80,6 +82,7 @@ ChatBot::~ChatBot()
         chatbot._rootNode = nullptr;
         _chatLogic = chatbot._chatLogic;
         chatbot._chatLogic = nullptr;
+        _chatLogic->SetChatbotHandle(this);
     }
     ChatBot& ChatBot::operator=(ChatBot &&chatbot)
     {
@@ -95,6 +98,7 @@ ChatBot::~ChatBot()
         chatbot._rootNode = nullptr;
         _chatLogic = chatbot._chatLogic;
         chatbot._chatLogic = nullptr;
+        _chatLogic->SetChatbotHandle(this);
         return *this;
     }
 
@@ -142,7 +146,6 @@ void ChatBot::SetCurrentNode(GraphNode *node)
     std::mt19937 generator(int(std::time(0)));
     std::uniform_int_distribution<int> dis(0, answers.size() - 1);
     std::string answer = answers.at(dis(generator));
-    _chatLogic->SetChatbotHandle(this);
     // send selected node answer to user
     _chatLogic->SendMessageToUser(answer);
     
