@@ -46,7 +46,7 @@ ChatBot::~ChatBot()
 }
 
 
-    ChatBot::ChatBot(ChatBot &chatbot)
+    ChatBot::ChatBot(const ChatBot &chatbot)
     {
         std::cout << "ChatBot Copy Constructor" << std::endl;
          
@@ -58,7 +58,7 @@ ChatBot::~ChatBot()
         _chatLogic->SetChatbotHandle(this);
     }
 
-    ChatBot& ChatBot::operator=(ChatBot &chatbot)
+    ChatBot& ChatBot::operator=(const ChatBot &chatbot)
     {
         std::cout << "ChatBot Copy assignment Constructor" << std::endl;
         _image = new wxBitmap(*chatbot._image);
